@@ -2,83 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MarketForge AI Design System - Symbolic Financial Cognition Engine
-Neural lattice color system with quantum-inspired aesthetics
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Neural Matrix Base */
-    --background: 210 24% 6%;
-    --foreground: 210 20% 94%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
-    /* Cognition Cards */
-    --card: 210 24% 8%;
-    --card-foreground: 210 20% 94%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
 
-    /* Overlay Systems */
-    --popover: 210 24% 10%;
-    --popover-foreground: 210 20% 94%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    /* Primary Wave - Neural Blue */
-    --primary: 215 89% 52%;
-    --primary-foreground: 210 20% 98%;
-    --primary-glow: 215 89% 65%;
-    --primary-dark: 215 89% 35%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
 
-    /* Secondary Resonance - Quantum Slate */
-    --secondary: 210 24% 16%;
-    --secondary-foreground: 210 20% 94%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    /* Muted Consciousness */
-    --muted: 210 24% 12%;
-    --muted-foreground: 210 15% 65%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Accent Frequencies */
-    --accent: 210 24% 14%;
-    --accent-foreground: 210 20% 94%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
-    /* Temporal Gold */
-    --temporal: 43 96% 56%;
-    --temporal-foreground: 210 24% 8%;
-    --temporal-glow: 43 96% 70%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    /* Resonance Green */
-    --resonance: 160 84% 39%;
-    --resonance-foreground: 210 20% 98%;
-    --resonance-glow: 160 84% 52%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
 
-    /* Chaos Red */
-    --chaos: 0 84% 60%;
-    --chaos-foreground: 210 20% 98%;
-
-    /* Entropy Orange */
-    --entropy: 25 95% 53%;
-    --entropy-foreground: 210 24% 8%;
-
-    /* System Borders & Inputs */
-    --border: 210 24% 18%;
-    --input: 210 24% 12%;
-    --ring: 215 89% 52%;
-
-    /* Gradients */
-    --gradient-neural: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
-    --gradient-matrix: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--card)) 100%);
-    --gradient-wave: linear-gradient(90deg, hsl(var(--resonance)) 0%, hsl(var(--primary)) 50%, hsl(var(--temporal)) 100%);
-    --gradient-cognition: radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.3) 0%, transparent 70%);
-
-    /* Shadows & Effects */
-    --shadow-neural: 0 4px 20px hsl(var(--primary) / 0.3);
-    --shadow-deep: 0 10px 40px hsl(var(--background) / 0.8);
-    --shadow-resonance: 0 0 30px hsl(var(--resonance) / 0.4);
-    --shadow-temporal: 0 0 25px hsl(var(--temporal) / 0.5);
-
-    /* Animations */
-    --transition-neural: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-wave: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
 
