@@ -1,12 +1,43 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { MarketHeader } from '@/components/dashboard/MarketHeader';
+import { AdvancedTradingChart } from '@/components/advanced/AdvancedTradingChart';
+import { MarketIntelligenceHub } from '@/components/advanced/MarketIntelligenceHub';
+import { AdvancedPortfolioAnalytics } from '@/components/advanced/AdvancedPortfolioAnalytics';
+import { NewsAndAlerts } from '@/components/advanced/NewsAndAlerts';
+import { QuantumSimulator } from '@/components/dashboard/QuantumSimulator';
+import { MarketHeatmap } from '@/components/dashboard/MarketHeatmap';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <MarketHeader />
+      
+      <main className="p-6 space-y-6">
+        {/* Advanced Trading Analysis */}
+        <div className="grid grid-cols-1 gap-6">
+          <AdvancedTradingChart />
+        </div>
+
+        {/* Market Intelligence Dashboard */}
+        <div className="grid grid-cols-1 gap-6">
+          <MarketIntelligenceHub />
+        </div>
+
+        {/* Portfolio & News Analysis */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-2">
+            <AdvancedPortfolioAnalytics />
+          </div>
+          <div>
+            <NewsAndAlerts />
+          </div>
+        </div>
+
+        {/* Advanced Tools */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <QuantumSimulator />
+          <MarketHeatmap />
+        </div>
+      </main>
     </div>
   );
 };
