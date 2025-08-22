@@ -1,7 +1,8 @@
 import { MarketHeader } from '@/components/dashboard/MarketHeader';
-import { SymbolicChart } from '@/components/dashboard/SymbolicChart';
-import { AIInsights } from '@/components/dashboard/AIInsights';
-import { PortfolioResonance } from '@/components/dashboard/PortfolioResonance';
+import { AdvancedTradingChart } from '@/components/advanced/AdvancedTradingChart';
+import { MarketIntelligenceHub } from '@/components/advanced/MarketIntelligenceHub';
+import { AdvancedPortfolioAnalytics } from '@/components/advanced/AdvancedPortfolioAnalytics';
+import { NewsAndAlerts } from '@/components/advanced/NewsAndAlerts';
 import { QuantumSimulator } from '@/components/dashboard/QuantumSimulator';
 import { MarketHeatmap } from '@/components/dashboard/MarketHeatmap';
 
@@ -11,24 +12,29 @@ const Index = () => {
       <MarketHeader />
       
       <main className="p-6 space-y-6">
-        {/* Primary Analysis Grid */}
+        {/* Advanced Trading Analysis */}
+        <div className="grid grid-cols-1 gap-6">
+          <AdvancedTradingChart />
+        </div>
+
+        {/* Market Intelligence Dashboard */}
+        <div className="grid grid-cols-1 gap-6">
+          <MarketIntelligenceHub />
+        </div>
+
+        {/* Portfolio & News Analysis */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2">
-            <SymbolicChart />
+            <AdvancedPortfolioAnalytics />
           </div>
           <div>
-            <AIInsights />
+            <NewsAndAlerts />
           </div>
         </div>
 
-        {/* Secondary Analysis Grid */}
+        {/* Advanced Tools */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <PortfolioResonance />
           <QuantumSimulator />
-        </div>
-
-        {/* Market Overview */}
-        <div className="grid grid-cols-1 gap-6">
           <MarketHeatmap />
         </div>
       </main>
