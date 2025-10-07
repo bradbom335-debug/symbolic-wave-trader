@@ -76,23 +76,26 @@ export const HarmonicNeuralNetwork: React.FC<HarmonicNeuralNetworkProps> = ({
 
   // Forward propagation through harmonic neural layers
   const forwardPropagate = (input: number, weights: number[][]): number[] => {
-    let activations = [input];
+    const activations: number[] = [input];
+    let currentInput = input;
     
     weights.forEach((layerWeights, layerIndex) => {
-      const layerActivations: number[] = [];
+      let layerSum = 0;
+      let layerCount = 0;
       
       layerWeights.forEach((weight, neuronIndex) => {
         const bias = Math.sin((layerIndex + 1) * Math.PI / 6); // Harmonic bias
-        const lastActivation = activations[activations.length - 1];
-        const inputValue = Array.isArray(lastActivation) ? lastActivation[0] : lastActivation;
-        const activation = neuronActivation(inputValue, weight, bias);
-        layerActivations.push(activation);
+        const activation = neuronActivation(currentInput, weight, bias);
+        layerSum += activation;
+        layerCount++;
       });
       
-      activations.push(layerActivations.length === 1 ? layerActivations[0] : layerActivations);
+      // Average activation for this layer
+      currentInput = layerSum / layerCount;
+      activations.push(currentInput);
     });
     
-    return activations.flat();
+    return activations;
   };
 
   // Generate harmonic neural predictions
