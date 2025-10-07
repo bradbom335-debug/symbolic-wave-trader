@@ -1,1 +1,10 @@
 project_id = "pkmbbjnptzzrtgucrzjd"
+
+[functions.ai-memory-context]
+verify_jwt = false
+
+[functions.multi-agent-consensus]
+verify_jwt = false
+
+[functions.market-data-aggregator]
+verify_jwt = false
