@@ -14,6 +14,112 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_performance: {
+        Row: {
+          accuracy: number | null
+          agent_id: string | null
+          avg_confidence: number | null
+          confidence_calibration: number | null
+          correct_predictions: number
+          created_at: string | null
+          id: string
+          performance_by_symbol: Json | null
+          performance_by_timeframe: Json | null
+          period_end: string
+          period_start: string
+          total_predictions: number
+          updated_at: string | null
+        }
+        Insert: {
+          accuracy?: number | null
+          agent_id?: string | null
+          avg_confidence?: number | null
+          confidence_calibration?: number | null
+          correct_predictions?: number
+          created_at?: string | null
+          id?: string
+          performance_by_symbol?: Json | null
+          performance_by_timeframe?: Json | null
+          period_end: string
+          period_start: string
+          total_predictions?: number
+          updated_at?: string | null
+        }
+        Update: {
+          accuracy?: number | null
+          agent_id?: string | null
+          avg_confidence?: number | null
+          confidence_calibration?: number | null
+          correct_predictions?: number
+          created_at?: string | null
+          id?: string
+          performance_by_symbol?: Json | null
+          performance_by_timeframe?: Json | null
+          period_end?: string
+          period_start?: string
+          total_predictions?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_performance_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "ai_agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_predictions: {
+        Row: {
+          agent_id: string | null
+          confidence: number
+          created_at: string | null
+          direction: string
+          id: string
+          key_signals: Json | null
+          market_data_snapshot: Json | null
+          prediction_time: string
+          reasoning: string | null
+          symbol: string
+          target_timeframe: string
+        }
+        Insert: {
+          agent_id?: string | null
+          confidence: number
+          created_at?: string | null
+          direction: string
+          id?: string
+          key_signals?: Json | null
+          market_data_snapshot?: Json | null
+          prediction_time?: string
+          reasoning?: string | null
+          symbol: string
+          target_timeframe: string
+        }
+        Update: {
+          agent_id?: string | null
+          confidence?: number
+          created_at?: string | null
+          direction?: string
+          id?: string
+          key_signals?: Json | null
+          market_data_snapshot?: Json | null
+          prediction_time?: string
+          reasoning?: string | null
+          symbol?: string
+          target_timeframe?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_predictions_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "ai_agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_agent_sessions: {
         Row: {
           agent_id: string | null
@@ -320,6 +426,86 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      alert_history: {
+        Row: {
+          alert_rule_id: string | null
+          delivery_channel: string
+          delivery_status: string
+          error_message: string | null
+          id: string
+          message: string
+          sent_at: string | null
+          symbol: string
+          user_id: string
+        }
+        Insert: {
+          alert_rule_id?: string | null
+          delivery_channel: string
+          delivery_status: string
+          error_message?: string | null
+          id?: string
+          message: string
+          sent_at?: string | null
+          symbol: string
+          user_id: string
+        }
+        Update: {
+          alert_rule_id?: string | null
+          delivery_channel?: string
+          delivery_status?: string
+          error_message?: string | null
+          id?: string
+          message?: string
+          sent_at?: string | null
+          symbol?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_history_alert_rule_id_fkey"
+            columns: ["alert_rule_id"]
+            isOneToOne: false
+            referencedRelation: "alert_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alert_rules: {
+        Row: {
+          condition_type: string
+          conditions: Json
+          created_at: string | null
+          delivery_channels: string[]
+          id: string
+          is_active: boolean | null
+          symbol: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          condition_type: string
+          conditions: Json
+          created_at?: string | null
+          delivery_channels: string[]
+          id?: string
+          is_active?: boolean | null
+          symbol: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          condition_type?: string
+          conditions?: Json
+          created_at?: string | null
+          delivery_channels?: string[]
+          id?: string
+          is_active?: boolean | null
+          symbol?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       animation_data: {
         Row: {
@@ -1000,6 +1186,42 @@ export type Database = {
         }
         Relationships: []
       }
+      composite_arms: {
+        Row: {
+          arm: number
+          avg_returns: number | null
+          created_at: string | null
+          entropy: number
+          historical_outcomes: Json | null
+          id: string
+          modulus: number
+          sample_size: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          arm: number
+          avg_returns?: number | null
+          created_at?: string | null
+          entropy: number
+          historical_outcomes?: Json | null
+          id?: string
+          modulus: number
+          sample_size?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          arm?: number
+          avg_returns?: number | null
+          created_at?: string | null
+          entropy?: number
+          historical_outcomes?: Json | null
+          id?: string
+          modulus?: number
+          sample_size?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       computer_vision_analysis: {
         Row: {
           analysis_type: string
@@ -1053,6 +1275,93 @@ export type Database = {
           },
         ]
       }
+      kg_edges: {
+        Row: {
+          confidence: number
+          created_at: string | null
+          evidence: Json | null
+          id: string
+          relationship_type: string
+          source_node_id: string | null
+          target_node_id: string | null
+          updated_at: string | null
+          weight: number
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string | null
+          evidence?: Json | null
+          id?: string
+          relationship_type: string
+          source_node_id?: string | null
+          target_node_id?: string | null
+          updated_at?: string | null
+          weight?: number
+        }
+        Update: {
+          confidence?: number
+          created_at?: string | null
+          evidence?: Json | null
+          id?: string
+          relationship_type?: string
+          source_node_id?: string | null
+          target_node_id?: string | null
+          updated_at?: string | null
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kg_edges_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "kg_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kg_edges_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "kg_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kg_nodes: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          embedding: string | null
+          entity_name: string
+          entity_type: string
+          id: string
+          importance_score: number | null
+          metadata: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          embedding?: string | null
+          entity_name: string
+          entity_type: string
+          id?: string
+          importance_score?: number | null
+          metadata?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          embedding?: string | null
+          entity_name?: string
+          entity_type?: string
+          id?: string
+          importance_score?: number | null
+          metadata?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       knowledge_base: {
         Row: {
           category: string
@@ -1104,6 +1413,126 @@ export type Database = {
           subcategory?: string | null
           tags?: string[] | null
           view_count?: number | null
+        }
+        Relationships: []
+      }
+      market_data_history: {
+        Row: {
+          close: number
+          created_at: string | null
+          data_source: string
+          high: number
+          id: string
+          low: number
+          open: number
+          symbol: string
+          timeframe: string
+          timestamp: string
+          volume: number
+        }
+        Insert: {
+          close: number
+          created_at?: string | null
+          data_source: string
+          high: number
+          id?: string
+          low: number
+          open: number
+          symbol: string
+          timeframe: string
+          timestamp: string
+          volume: number
+        }
+        Update: {
+          close?: number
+          created_at?: string | null
+          data_source?: string
+          high?: number
+          id?: string
+          low?: number
+          open?: number
+          symbol?: string
+          timeframe?: string
+          timestamp?: string
+          volume?: number
+        }
+        Relationships: []
+      }
+      market_embeddings: {
+        Row: {
+          content_id: string
+          content_type: string
+          created_at: string | null
+          embedding: string | null
+          id: string
+          metadata: Json | null
+          text_content: string
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          created_at?: string | null
+          embedding?: string | null
+          id?: string
+          metadata?: Json | null
+          text_content: string
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          created_at?: string | null
+          embedding?: string | null
+          id?: string
+          metadata?: Json | null
+          text_content?: string
+        }
+        Relationships: []
+      }
+      market_news: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          description: string | null
+          entities: Json | null
+          id: string
+          published_at: string
+          sentiment_magnitude: number | null
+          sentiment_score: number | null
+          source: string
+          symbols: string[] | null
+          title: string
+          topics: string[] | null
+          url: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          description?: string | null
+          entities?: Json | null
+          id?: string
+          published_at: string
+          sentiment_magnitude?: number | null
+          sentiment_score?: number | null
+          source: string
+          symbols?: string[] | null
+          title: string
+          topics?: string[] | null
+          url: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          description?: string | null
+          entities?: Json | null
+          id?: string
+          published_at?: string
+          sentiment_magnitude?: number | null
+          sentiment_score?: number | null
+          source?: string
+          symbols?: string[] | null
+          title?: string
+          topics?: string[] | null
+          url?: string
         }
         Relationships: []
       }
@@ -1203,6 +1632,39 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_archives: {
+        Row: {
+          archived_at: string | null
+          compressed_size_bytes: number
+          compression_ratio: number | null
+          gcs_url: string
+          id: string
+          metadata: Json | null
+          original_size_bytes: number
+          session_id: string
+        }
+        Insert: {
+          archived_at?: string | null
+          compressed_size_bytes: number
+          compression_ratio?: number | null
+          gcs_url: string
+          id?: string
+          metadata?: Json | null
+          original_size_bytes: number
+          session_id: string
+        }
+        Update: {
+          archived_at?: string | null
+          compressed_size_bytes?: number
+          compression_ratio?: number | null
+          gcs_url?: string
+          id?: string
+          metadata?: Json | null
+          original_size_bytes?: number
+          session_id?: string
+        }
+        Relationships: []
+      }
       physics_simulations: {
         Row: {
           completed_at: string | null
@@ -1262,6 +1724,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      prediction_outcomes: {
+        Row: {
+          actual_direction: string
+          actual_price_change: number
+          created_at: string | null
+          directional_accuracy: boolean
+          evaluated_at: string
+          id: string
+          magnitude_error: number | null
+          prediction_id: string | null
+        }
+        Insert: {
+          actual_direction: string
+          actual_price_change: number
+          created_at?: string | null
+          directional_accuracy: boolean
+          evaluated_at?: string
+          id?: string
+          magnitude_error?: number | null
+          prediction_id?: string | null
+        }
+        Update: {
+          actual_direction?: string
+          actual_price_change?: number
+          created_at?: string | null
+          directional_accuracy?: boolean
+          evaluated_at?: string
+          id?: string
+          magnitude_error?: number | null
+          prediction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_outcomes_prediction_id_fkey"
+            columns: ["prediction_id"]
+            isOneToOne: true
+            referencedRelation: "agent_predictions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       procedural_generation_templates: {
         Row: {
@@ -1741,6 +2244,51 @@ export type Database = {
           },
         ]
       }
+      social_sentiment: {
+        Row: {
+          avg_sentiment: number | null
+          bearish_count: number | null
+          bullish_count: number | null
+          created_at: string | null
+          id: string
+          mention_count: number | null
+          neutral_count: number | null
+          platform: string
+          symbol: string
+          timestamp: string
+          top_posts: Json | null
+          volume_weighted_sentiment: number | null
+        }
+        Insert: {
+          avg_sentiment?: number | null
+          bearish_count?: number | null
+          bullish_count?: number | null
+          created_at?: string | null
+          id?: string
+          mention_count?: number | null
+          neutral_count?: number | null
+          platform: string
+          symbol: string
+          timestamp: string
+          top_posts?: Json | null
+          volume_weighted_sentiment?: number | null
+        }
+        Update: {
+          avg_sentiment?: number | null
+          bearish_count?: number | null
+          bullish_count?: number | null
+          created_at?: string | null
+          id?: string
+          mention_count?: number | null
+          neutral_count?: number | null
+          platform?: string
+          symbol?: string
+          timestamp?: string
+          top_posts?: Json | null
+          volume_weighted_sentiment?: number | null
+        }
+        Relationships: []
+      }
       spatial_intelligence_data: {
         Row: {
           accessibility_data: Json | null
@@ -1806,6 +2354,57 @@ export type Database = {
           },
         ]
       }
+      technical_indicators: {
+        Row: {
+          created_at: string | null
+          id: string
+          indicator_type: string
+          symbol: string
+          timeframe: string
+          timestamp: string
+          values: Json
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          indicator_type: string
+          symbol: string
+          timeframe: string
+          timestamp: string
+          values: Json
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          indicator_type?: string
+          symbol?: string
+          timeframe?: string
+          timestamp?: string
+          values?: Json
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           avatar_url: string | null
@@ -1848,18 +2447,159 @@ export type Database = {
         }
         Relationships: []
       }
+      visual_patterns: {
+        Row: {
+          chart_url: string
+          created_at: string | null
+          detected_patterns: Json | null
+          id: string
+          resistance_levels: number[] | null
+          support_levels: number[] | null
+          symbol: string
+          timeframe: string
+          timestamp: string
+          trend_lines: Json | null
+          vision_api_response: Json | null
+        }
+        Insert: {
+          chart_url: string
+          created_at?: string | null
+          detected_patterns?: Json | null
+          id?: string
+          resistance_levels?: number[] | null
+          support_levels?: number[] | null
+          symbol: string
+          timeframe: string
+          timestamp: string
+          trend_lines?: Json | null
+          vision_api_response?: Json | null
+        }
+        Update: {
+          chart_url?: string
+          created_at?: string | null
+          detected_patterns?: Json | null
+          id?: string
+          resistance_levels?: number[] | null
+          support_levels?: number[] | null
+          symbol?: string
+          timeframe?: string
+          timestamp?: string
+          trend_lines?: Json | null
+          vision_api_response?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      binary_quantize: {
+        Args: { "": string } | { "": unknown }
+        Returns: unknown
+      }
+      halfvec_avg: {
+        Args: { "": number[] }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      hnsw_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnswhandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflathandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      l2_norm: {
+        Args: { "": unknown } | { "": unknown }
+        Returns: number
+      }
+      l2_normalize: {
+        Args: { "": string } | { "": unknown } | { "": unknown }
+        Returns: string
+      }
+      sparsevec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
       validate_api_key_usage: {
         Args: { key_id: string }
         Returns: boolean
       }
+      vector_avg: {
+        Args: { "": number[] }
+        Returns: string
+      }
+      vector_dims: {
+        Args: { "": string } | { "": unknown }
+        Returns: number
+      }
+      vector_norm: {
+        Args: { "": string }
+        Returns: number
+      }
+      vector_out: {
+        Args: { "": string }
+        Returns: unknown
+      }
+      vector_send: {
+        Args: { "": string }
+        Returns: string
+      }
+      vector_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "premium" | "free"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1986,6 +2726,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "premium", "free"],
+    },
   },
 } as const
