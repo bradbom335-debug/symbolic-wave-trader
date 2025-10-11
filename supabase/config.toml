@@ -8,3 +8,27 @@ verify_jwt = false
 
 [functions.market-data-aggregator]
 verify_jwt = false
+
+[functions.alpha-vantage-integration]
+verify_jwt = false
+
+[functions.news-sentiment-aggregator]
+verify_jwt = false
+
+[functions.social-sentiment-tracker]
+verify_jwt = false
+
+[functions.outcome-tracker]
+verify_jwt = false
+
+[functions.vision-chart-analyzer]
+verify_jwt = false
+
+[functions.knowledge-graph-builder]
+verify_jwt = false
+
+[functions.alert-dispatcher]
+verify_jwt = false
+
+[functions.memory-archiver]
+verify_jwt = false
