@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/auth/AuthProvider";
-import AppLayout from "@/components/layout/AppLayout";
+import { TradingOS } from "@/components/trading-os/TradingOS";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Portfolio from "./pages/Portfolio";
@@ -22,7 +22,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<AppLayout />}>
+            <Route path="/" element={<TradingOS />}>
               <Route index element={<Index />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="portfolio" element={<Portfolio />} />
