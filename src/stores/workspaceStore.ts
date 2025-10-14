@@ -19,6 +19,9 @@ export interface Workspace {
   name: string;
   panels: Panel[];
   layout: 'grid' | 'free' | 'stacked';
+  presetType?: 'day_trading' | 'swing_analysis' | 'options_trading' | 'risk_management' | 'custom';
+  linkedSymbol?: string;
+  performanceMode?: 'high' | 'balanced' | 'battery';
 }
 
 interface WorkspaceState {
@@ -50,9 +53,11 @@ export const useWorkspaceStore = create<WorkspaceState>()(
       workspaces: [
         {
           id: 'default',
-          name: 'Main Workspace',
+          name: 'Day Trading',
           panels: [],
-          layout: 'grid'
+          layout: 'grid',
+          presetType: 'day_trading',
+          performanceMode: 'high'
         }
       ],
       leftDrawerOpen: false,

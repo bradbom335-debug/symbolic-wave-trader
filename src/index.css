@@ -7,6 +7,20 @@
     /* LED Trading Screen Theme - Ultra Professional */
     --background: 218 23% 6%;           /* Deep black background */
     --foreground: 0 0% 98%;             /* Crisp white text */
+    
+    /* Ultra-compact spacing (Phase 1) */
+    --space-micro: 2px;
+    --space-mini: 4px;
+    --space-xs: 6px;
+    --space-sm: 8px;
+    
+    /* Terminal-specific colors */
+    --terminal-bg-deep: 0 0% 4%;
+    --terminal-bg-panel: 0 0% 8%;
+    --terminal-bg-elevated: 0 0% 12%;
+    --terminal-green: 142 76% 45%;
+    --terminal-red: 0 84% 60%;
+    --terminal-blue: 210 100% 56%;
 
     --card: 217 19% 9%;                 /* Panel background */
     --card-foreground: 0 0% 98%;

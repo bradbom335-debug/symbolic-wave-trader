@@ -1665,6 +1665,77 @@ export type Database = {
         }
         Relationships: []
       }
+      panel_hotkeys: {
+        Row: {
+          action_config: Json
+          action_type: string
+          created_at: string | null
+          hotkey: string
+          id: string
+          is_enabled: boolean | null
+          user_id: string
+        }
+        Insert: {
+          action_config: Json
+          action_type: string
+          created_at?: string | null
+          hotkey: string
+          id?: string
+          is_enabled?: boolean | null
+          user_id: string
+        }
+        Update: {
+          action_config?: Json
+          action_type?: string
+          created_at?: string | null
+          hotkey?: string
+          id?: string
+          is_enabled?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      panel_links: {
+        Row: {
+          created_at: string | null
+          id: string
+          link_group_id: string
+          linked_symbol: string | null
+          panel_ids: string[]
+          sync_indicators: boolean | null
+          sync_timeframe: boolean | null
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          link_group_id: string
+          linked_symbol?: string | null
+          panel_ids: string[]
+          sync_indicators?: boolean | null
+          sync_timeframe?: boolean | null
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          link_group_id?: string
+          linked_symbol?: string | null
+          panel_ids?: string[]
+          sync_indicators?: boolean | null
+          sync_timeframe?: boolean | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "panel_links_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_presets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       physics_simulations: {
         Row: {
           completed_at: string | null
@@ -2489,6 +2560,81 @@ export type Database = {
         }
         Relationships: []
       }
+      volume_profiles: {
+        Row: {
+          created_at: string | null
+          date: string
+          id: string
+          poc: number | null
+          price_levels: Json
+          symbol: string
+          timeframe: string
+          total_volume: number | null
+          vah: number | null
+          val: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          id?: string
+          poc?: number | null
+          price_levels: Json
+          symbol: string
+          timeframe: string
+          total_volume?: number | null
+          vah?: number | null
+          val?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          id?: string
+          poc?: number | null
+          price_levels?: Json
+          symbol?: string
+          timeframe?: string
+          total_volume?: number | null
+          vah?: number | null
+          val?: number | null
+        }
+        Relationships: []
+      }
+      workspace_presets: {
+        Row: {
+          created_at: string | null
+          hotkey_bindings: Json | null
+          id: string
+          is_default: boolean | null
+          panel_config: Json
+          preset_name: string
+          preset_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          hotkey_bindings?: Json | null
+          id?: string
+          is_default?: boolean | null
+          panel_config?: Json
+          preset_name: string
+          preset_type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          hotkey_bindings?: Json | null
+          id?: string
+          is_default?: boolean | null
+          panel_config?: Json
+          preset_name?: string
+          preset_type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -2555,7 +2701,7 @@ export type Database = {
       }
       l2_normalize: {
         Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: string
+        Returns: unknown
       }
       sparsevec_out: {
         Args: { "": unknown }
