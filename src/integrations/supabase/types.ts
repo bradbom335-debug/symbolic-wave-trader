@@ -1275,6 +1275,33 @@ export type Database = {
           },
         ]
       }
+      correlation_matrices: {
+        Row: {
+          asset_set: string[]
+          calculated_at: string | null
+          correlation_data: Json
+          expires_at: string | null
+          id: string
+          period: string
+        }
+        Insert: {
+          asset_set: string[]
+          calculated_at?: string | null
+          correlation_data: Json
+          expires_at?: string | null
+          id?: string
+          period: string
+        }
+        Update: {
+          asset_set?: string[]
+          calculated_at?: string | null
+          correlation_data?: Json
+          expires_at?: string | null
+          id?: string
+          period?: string
+        }
+        Relationships: []
+      }
       kg_edges: {
         Row: {
           confidence: number
@@ -1665,6 +1692,96 @@ export type Database = {
         }
         Relationships: []
       }
+      options_flow: {
+        Row: {
+          confidence_score: number | null
+          detected_at: string | null
+          expiry: string
+          id: string
+          is_unusual: boolean | null
+          iv: number | null
+          oi_change: number | null
+          option_type: string | null
+          premium: number | null
+          sentiment: string | null
+          size: number | null
+          strike: number
+          symbol: string
+          trade_type: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          detected_at?: string | null
+          expiry: string
+          id?: string
+          is_unusual?: boolean | null
+          iv?: number | null
+          oi_change?: number | null
+          option_type?: string | null
+          premium?: number | null
+          sentiment?: string | null
+          size?: number | null
+          strike: number
+          symbol: string
+          trade_type?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          detected_at?: string | null
+          expiry?: string
+          id?: string
+          is_unusual?: boolean | null
+          iv?: number | null
+          oi_change?: number | null
+          option_type?: string | null
+          premium?: number | null
+          sentiment?: string | null
+          size?: number | null
+          strike?: number
+          symbol?: string
+          trade_type?: string | null
+        }
+        Relationships: []
+      }
+      order_book_snapshots: {
+        Row: {
+          asks: Json
+          bid_imbalance: number | null
+          bids: Json
+          created_at: string | null
+          exchange: string
+          id: string
+          mid_price: number | null
+          spread: number | null
+          symbol: string
+          timestamp: string
+        }
+        Insert: {
+          asks: Json
+          bid_imbalance?: number | null
+          bids: Json
+          created_at?: string | null
+          exchange: string
+          id?: string
+          mid_price?: number | null
+          spread?: number | null
+          symbol: string
+          timestamp: string
+        }
+        Update: {
+          asks?: Json
+          bid_imbalance?: number | null
+          bids?: Json
+          created_at?: string | null
+          exchange?: string
+          id?: string
+          mid_price?: number | null
+          spread?: number | null
+          symbol?: string
+          timestamp?: string
+        }
+        Relationships: []
+      }
       panel_hotkeys: {
         Row: {
           action_config: Json
@@ -1793,6 +1910,138 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      portfolio_greeks: {
+        Row: {
+          calculated_at: string | null
+          delta: number | null
+          gamma: number | null
+          id: string
+          position_size: number | null
+          rho: number | null
+          symbol: string
+          theta: number | null
+          updated_at: string | null
+          user_id: string
+          vega: number | null
+        }
+        Insert: {
+          calculated_at?: string | null
+          delta?: number | null
+          gamma?: number | null
+          id?: string
+          position_size?: number | null
+          rho?: number | null
+          symbol: string
+          theta?: number | null
+          updated_at?: string | null
+          user_id: string
+          vega?: number | null
+        }
+        Update: {
+          calculated_at?: string | null
+          delta?: number | null
+          gamma?: number | null
+          id?: string
+          position_size?: number | null
+          rho?: number | null
+          symbol?: string
+          theta?: number | null
+          updated_at?: string | null
+          user_id?: string
+          vega?: number | null
+        }
+        Relationships: []
+      }
+      portfolio_positions: {
+        Row: {
+          avg_cost: number
+          closed_at: string | null
+          current_price: number | null
+          id: string
+          opened_at: string | null
+          position_type: string | null
+          quantity: number
+          realized_pnl: number | null
+          symbol: string
+          unrealized_pnl: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avg_cost: number
+          closed_at?: string | null
+          current_price?: number | null
+          id?: string
+          opened_at?: string | null
+          position_type?: string | null
+          quantity: number
+          realized_pnl?: number | null
+          symbol: string
+          unrealized_pnl?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avg_cost?: number
+          closed_at?: string | null
+          current_price?: number | null
+          id?: string
+          opened_at?: string | null
+          position_type?: string | null
+          quantity?: number
+          realized_pnl?: number | null
+          symbol?: string
+          unrealized_pnl?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      portfolio_risk_metrics: {
+        Row: {
+          beta_vs_spy: number | null
+          calculation_date: string
+          created_at: string | null
+          cvar_95: number | null
+          id: string
+          max_drawdown: number | null
+          portfolio_value: number | null
+          sharpe_ratio: number | null
+          sortino_ratio: number | null
+          user_id: string
+          var_95: number | null
+          volatility: number | null
+        }
+        Insert: {
+          beta_vs_spy?: number | null
+          calculation_date: string
+          created_at?: string | null
+          cvar_95?: number | null
+          id?: string
+          max_drawdown?: number | null
+          portfolio_value?: number | null
+          sharpe_ratio?: number | null
+          sortino_ratio?: number | null
+          user_id: string
+          var_95?: number | null
+          volatility?: number | null
+        }
+        Update: {
+          beta_vs_spy?: number | null
+          calculation_date?: string
+          created_at?: string | null
+          cvar_95?: number | null
+          id?: string
+          max_drawdown?: number | null
+          portfolio_value?: number | null
+          sharpe_ratio?: number | null
+          sortino_ratio?: number | null
+          user_id?: string
+          var_95?: number | null
+          volatility?: number | null
         }
         Relationships: []
       }
