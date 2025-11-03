@@ -11,11 +11,13 @@ export function TradingOS() {
 
   return (
     <div className="h-screen w-screen bg-background flex flex-col overflow-hidden">
-      {/* Top Command Bar */}
-      <TopCommandBar />
+      {/* Top Command Bar - Compact */}
+      <div className="h-10 border-b border-border flex-shrink-0">
+        <TopCommandBar />
+      </div>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden relative">
+      <div className="flex-1 flex overflow-hidden relative min-h-0">
         {/* Left Icon Bar */}
         <LeftSidebar isOpen={leftDrawerOpen} onToggle={toggleLeftDrawer} />
         
@@ -26,8 +28,10 @@ export function TradingOS() {
         <RightSidebar isOpen={rightDrawerOpen} onToggle={toggleRightDrawer} />
       </div>
       
-      {/* Bottom Status Bar */}
-      <BottomStatusBar />
+      {/* Bottom Status Bar - Compact */}
+      <div className="h-6 border-t border-border flex-shrink-0">
+        <BottomStatusBar />
+      </div>
     </div>
   );
 }

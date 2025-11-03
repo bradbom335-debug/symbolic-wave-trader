@@ -48,6 +48,12 @@
     --ring: 210 100% 56%;
 
     --radius: 0.25rem;                  /* Minimal rounded corners */
+    
+    /* Ultra-compact spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 0.75rem;
+    --spacing-lg: 1rem;
 
     /* Trading Specific Colors */
     --trading-bull: 142 76% 45%;        /* Bright green */

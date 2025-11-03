@@ -48,8 +48,8 @@ export function RightSidebar({ isOpen, onToggle }: RightSidebarProps) {
 
   return (
     <>
-      {/* Icon Bar */}
-      <div className="w-14 bg-slate-950 border-l border-slate-800 flex flex-col items-center py-4 gap-2">
+      {/* Icon Bar - Compact */}
+      <div className="w-10 bg-slate-950 border-l border-slate-800 flex flex-col items-center py-2 gap-1">
         {sidebarItems.map((item) => {
           const Icon = item.icon;
           const active = activePanel === item.id;
@@ -61,18 +61,18 @@ export function RightSidebar({ isOpen, onToggle }: RightSidebarProps) {
               size="sm"
               onClick={() => handleItemClick(item.id)}
               className={cn(
-                "w-10 h-10 p-0 relative group",
+                "w-8 h-8 p-0 relative group",
                 active ? item.color : "text-slate-500 hover:text-white"
               )}
               title={item.label}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-3.5 h-3.5" />
               {active && (
-                <div className={cn("absolute right-0 top-0 bottom-0 w-1 bg-current rounded-l")} />
+                <div className={cn("absolute right-0 top-0 bottom-0 w-0.5 bg-current rounded-l")} />
               )}
               
               {/* Tooltip */}
-              <div className="absolute right-14 px-2 py-1 bg-slate-800 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+              <div className="absolute right-10 px-1.5 py-0.5 bg-slate-800 text-white text-[10px] rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                 {item.label}
               </div>
             </Button>
@@ -80,12 +80,12 @@ export function RightSidebar({ isOpen, onToggle }: RightSidebarProps) {
         })}
       </div>
 
-      {/* Drawer Panel */}
+      {/* Drawer Panel - Compact */}
       <Sheet open={isOpen && activePanel !== null} onOpenChange={onToggle}>
-        <SheetContent side="right" className="w-[500px] bg-slate-900 border-slate-800 p-0">
+        <SheetContent side="right" className="w-80 bg-slate-900 border-slate-800 p-0">
           <div className="h-full flex flex-col">
-            <div className="p-4 border-b border-slate-800">
-              <h2 className="text-lg font-semibold text-white">
+            <div className="p-2 border-b border-slate-800">
+              <h2 className="text-sm font-semibold text-white">
                 {sidebarItems.find(item => item.id === activePanel)?.label}
               </h2>
             </div>

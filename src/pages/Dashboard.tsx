@@ -8,36 +8,37 @@ import { AIMemoryDashboard } from '@/components/ai-memory/AIMemoryDashboard';
 
 const Dashboard = () => {
   return (
-    <div className="space-y-6">
-      {/* AI Memory Operating System */}
-      <div className="grid grid-cols-1 gap-6">
+    <div className="space-y-2 p-2">
+      {/* Compact Grid - Everything visible at once */}
+      <div className="grid grid-cols-12 gap-2">
+        {/* Left Column - Trading & Intelligence */}
+        <div className="col-span-8 space-y-2">
+          <div className="h-[calc(50vh-5rem)]">
+            <AdvancedTradingChart />
+          </div>
+          <div className="h-[calc(50vh-5rem)]">
+            <MarketIntelligenceHub />
+          </div>
+        </div>
+
+        {/* Right Column - Portfolio, News, Tools */}
+        <div className="col-span-4 space-y-2">
+          <div className="h-[calc(33vh-3.5rem)]">
+            <AdvancedPortfolioAnalytics />
+          </div>
+          <div className="h-[calc(33vh-3.5rem)]">
+            <NewsAndAlerts />
+          </div>
+          <div className="grid grid-cols-2 gap-2 h-[calc(34vh-3.5rem)]">
+            <QuantumSimulator />
+            <MarketHeatmap />
+          </div>
+        </div>
+      </div>
+
+      {/* AI Memory System - Compact at bottom */}
+      <div className="h-48">
         <AIMemoryDashboard />
-      </div>
-
-      {/* Advanced Trading Analysis */}
-      <div className="grid grid-cols-1 gap-6">
-        <AdvancedTradingChart />
-      </div>
-
-      {/* Market Intelligence Dashboard */}
-      <div className="grid grid-cols-1 gap-6">
-        <MarketIntelligenceHub />
-      </div>
-
-      {/* Portfolio & News Analysis */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2">
-          <AdvancedPortfolioAnalytics />
-        </div>
-        <div>
-          <NewsAndAlerts />
-        </div>
-      </div>
-
-      {/* Advanced Tools */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <QuantumSimulator />
-        <MarketHeatmap />
       </div>
     </div>
   );
