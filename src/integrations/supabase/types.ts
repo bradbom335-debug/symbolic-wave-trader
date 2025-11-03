@@ -701,6 +701,81 @@ export type Database = {
         }
         Relationships: []
       }
+      backtest_results: {
+        Row: {
+          avg_trade_return: number | null
+          created_at: string | null
+          end_date: string
+          equity_curve: Json
+          final_capital: number
+          id: string
+          initial_capital: number
+          losing_trades: number
+          max_drawdown: number | null
+          metrics: Json | null
+          profit_factor: number | null
+          sharpe_ratio: number | null
+          start_date: string
+          strategy_id: string
+          symbol: string
+          timeframe: string
+          total_return: number | null
+          total_trades: number
+          trades_data: Json
+          user_id: string
+          win_rate: number | null
+          winning_trades: number
+        }
+        Insert: {
+          avg_trade_return?: number | null
+          created_at?: string | null
+          end_date: string
+          equity_curve?: Json
+          final_capital: number
+          id?: string
+          initial_capital?: number
+          losing_trades?: number
+          max_drawdown?: number | null
+          metrics?: Json | null
+          profit_factor?: number | null
+          sharpe_ratio?: number | null
+          start_date: string
+          strategy_id: string
+          symbol: string
+          timeframe: string
+          total_return?: number | null
+          total_trades?: number
+          trades_data?: Json
+          user_id: string
+          win_rate?: number | null
+          winning_trades?: number
+        }
+        Update: {
+          avg_trade_return?: number | null
+          created_at?: string | null
+          end_date?: string
+          equity_curve?: Json
+          final_capital?: number
+          id?: string
+          initial_capital?: number
+          losing_trades?: number
+          max_drawdown?: number | null
+          metrics?: Json | null
+          profit_factor?: number | null
+          sharpe_ratio?: number | null
+          start_date?: string
+          strategy_id?: string
+          symbol?: string
+          timeframe?: string
+          total_return?: number | null
+          total_trades?: number
+          trades_data?: Json
+          user_id?: string
+          win_rate?: number | null
+          winning_trades?: number
+        }
+        Relationships: []
+      }
       behavior_analysis: {
         Row: {
           behavior_type: string
@@ -1853,6 +1928,75 @@ export type Database = {
           },
         ]
       }
+      paper_trades: {
+        Row: {
+          created_at: string | null
+          entry_price: number
+          entry_reason: string | null
+          entry_time: string
+          exit_price: number | null
+          exit_reason: string | null
+          exit_time: string | null
+          id: string
+          metadata: Json | null
+          pnl: number | null
+          pnl_percent: number | null
+          quantity: number
+          status: string
+          stop_loss: number | null
+          strategy_id: string
+          symbol: string
+          take_profit: number | null
+          trade_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          entry_price: number
+          entry_reason?: string | null
+          entry_time: string
+          exit_price?: number | null
+          exit_reason?: string | null
+          exit_time?: string | null
+          id?: string
+          metadata?: Json | null
+          pnl?: number | null
+          pnl_percent?: number | null
+          quantity: number
+          status?: string
+          stop_loss?: number | null
+          strategy_id: string
+          symbol: string
+          take_profit?: number | null
+          trade_type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          entry_price?: number
+          entry_reason?: string | null
+          entry_time?: string
+          exit_price?: number | null
+          exit_reason?: string | null
+          exit_time?: string | null
+          id?: string
+          metadata?: Json | null
+          pnl?: number | null
+          pnl_percent?: number | null
+          quantity?: number
+          status?: string
+          stop_loss?: number | null
+          strategy_id?: string
+          symbol?: string
+          take_profit?: number | null
+          trade_type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       physics_simulations: {
         Row: {
           completed_at: string | null
@@ -2194,6 +2338,60 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           version?: number | null
+        }
+        Relationships: []
+      }
+      risk_controls: {
+        Row: {
+          created_at: string | null
+          emergency_stop: boolean | null
+          id: string
+          is_enabled: boolean | null
+          max_correlation: number
+          max_daily_loss: number
+          max_drawdown_percent: number
+          max_position_size: number
+          max_total_exposure: number
+          max_trades_per_day: number
+          stop_loss_percent: number
+          strategy_id: string | null
+          take_profit_percent: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          emergency_stop?: boolean | null
+          id?: string
+          is_enabled?: boolean | null
+          max_correlation?: number
+          max_daily_loss?: number
+          max_drawdown_percent?: number
+          max_position_size?: number
+          max_total_exposure?: number
+          max_trades_per_day?: number
+          stop_loss_percent?: number
+          strategy_id?: string | null
+          take_profit_percent?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          emergency_stop?: boolean | null
+          id?: string
+          is_enabled?: boolean | null
+          max_correlation?: number
+          max_daily_loss?: number
+          max_drawdown_percent?: number
+          max_position_size?: number
+          max_total_exposure?: number
+          max_trades_per_day?: number
+          stop_loss_percent?: number
+          strategy_id?: string | null
+          take_profit_percent?: number
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -2674,6 +2872,60 @@ export type Database = {
           },
         ]
       }
+      strategy_executions: {
+        Row: {
+          created_at: string | null
+          current_positions: Json | null
+          error_log: Json | null
+          execution_mode: string
+          id: string
+          performance_snapshot: Json | null
+          started_at: string
+          status: string
+          stopped_at: string | null
+          strategy_id: string
+          total_pnl: number | null
+          total_trades: number | null
+          updated_at: string | null
+          user_id: string
+          winning_trades: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_positions?: Json | null
+          error_log?: Json | null
+          execution_mode: string
+          id?: string
+          performance_snapshot?: Json | null
+          started_at?: string
+          status?: string
+          stopped_at?: string | null
+          strategy_id: string
+          total_pnl?: number | null
+          total_trades?: number | null
+          updated_at?: string | null
+          user_id: string
+          winning_trades?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          current_positions?: Json | null
+          error_log?: Json | null
+          execution_mode?: string
+          id?: string
+          performance_snapshot?: Json | null
+          started_at?: string
+          status?: string
+          stopped_at?: string | null
+          strategy_id?: string
+          total_pnl?: number | null
+          total_trades?: number | null
+          updated_at?: string | null
+          user_id?: string
+          winning_trades?: number | null
+        }
+        Relationships: []
+      }
       technical_indicators: {
         Row: {
           created_at: string | null
@@ -2701,6 +2953,66 @@ export type Database = {
           timeframe?: string
           timestamp?: string
           values?: Json
+        }
+        Relationships: []
+      }
+      trading_strategies: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          entry_rules: Json
+          exit_rules: Json
+          id: string
+          is_active: boolean | null
+          parameters: Json
+          performance_metrics: Json | null
+          risk_rules: Json
+          status: string
+          strategy_logic: Json
+          strategy_name: string
+          strategy_type: string
+          symbols: string[]
+          timeframe: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          entry_rules?: Json
+          exit_rules?: Json
+          id?: string
+          is_active?: boolean | null
+          parameters?: Json
+          performance_metrics?: Json | null
+          risk_rules?: Json
+          status?: string
+          strategy_logic?: Json
+          strategy_name: string
+          strategy_type: string
+          symbols?: string[]
+          timeframe?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          entry_rules?: Json
+          exit_rules?: Json
+          id?: string
+          is_active?: boolean | null
+          parameters?: Json
+          performance_metrics?: Json | null
+          risk_rules?: Json
+          status?: string
+          strategy_logic?: Json
+          strategy_name?: string
+          strategy_type?: string
+          symbols?: string[]
+          timeframe?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -2889,26 +3201,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      binary_quantize: {
-        Args: { "": string } | { "": unknown }
-        Returns: unknown
-      }
-      halfvec_avg: {
-        Args: { "": number[] }
-        Returns: unknown
-      }
-      halfvec_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      halfvec_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      halfvec_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -2916,82 +3208,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      hnsw_bit_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnsw_halfvec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnsw_sparsevec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnswhandler: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflat_bit_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflat_halfvec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflathandler: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      l2_norm: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: number
-      }
-      l2_normalize: {
-        Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: unknown
-      }
-      sparsevec_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      sparsevec_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      sparsevec_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
-      validate_api_key_usage: {
-        Args: { key_id: string }
-        Returns: boolean
-      }
-      vector_avg: {
-        Args: { "": number[] }
-        Returns: string
-      }
-      vector_dims: {
-        Args: { "": string } | { "": unknown }
-        Returns: number
-      }
-      vector_norm: {
-        Args: { "": string }
-        Returns: number
-      }
-      vector_out: {
-        Args: { "": string }
-        Returns: unknown
-      }
-      vector_send: {
-        Args: { "": string }
-        Returns: string
-      }
-      vector_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
+      validate_api_key_usage: { Args: { key_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "premium" | "free"
