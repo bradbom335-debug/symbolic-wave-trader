@@ -9,33 +9,36 @@ import { MultiStockGraph3D } from '@/components/advanced/MultiStockGraph3D';
 
 const Dashboard = () => {
   return (
-    <div className="h-screen overflow-hidden p-1 flex flex-col gap-1">
-      {/* Single viewport - no page scrolling */}
-      <div className="flex-1 grid grid-cols-12 gap-1 overflow-hidden">
-        {/* Left Column - Trading & Intelligence */}
-        <div className="col-span-7 flex flex-col gap-1 overflow-hidden">
-          <div className="h-[35%] overflow-hidden">
+    <div className="h-screen overflow-hidden flex flex-col gap-0.5 p-0.5 bg-[hsl(var(--terminal-bg))]">
+      <div className="flex-1 grid grid-cols-12 gap-0.5 overflow-hidden min-h-0">
+        {/* Left Column - Charts & Analysis */}
+        <div className="col-span-7 flex flex-col gap-0.5 overflow-hidden">
+          <div className="flex-[0_0_40%] overflow-hidden">
             <AdvancedTradingChart />
           </div>
-          <div className="h-[32%] overflow-hidden">
+          <div className="flex-[0_0_32%] overflow-hidden">
             <MarketIntelligenceHub />
           </div>
-          <div className="h-[33%] overflow-hidden">
-            <AIMemoryDashboard />
+          <div className="flex-[0_0_28%] overflow-hidden">
+            <MultiStockGraph3D />
           </div>
         </div>
 
-        {/* Right Column - Portfolio, News, Tools */}
-        <div className="col-span-5 flex flex-col gap-1 overflow-hidden">
-          <div className="h-[28%] overflow-hidden">
+        {/* Right Column - Portfolio & News */}
+        <div className="col-span-5 flex flex-col gap-0.5 overflow-hidden">
+          <div className="flex-[0_0_25%] overflow-hidden">
             <AdvancedPortfolioAnalytics />
           </div>
-          <div className="h-[44%] overflow-hidden">
+          <div className="flex-[0_0_50%] overflow-hidden">
             <NewsAndAlerts />
           </div>
-          <div className="h-[28%] grid grid-cols-2 gap-1">
-            <QuantumSimulator />
-            <MarketHeatmap />
+          <div className="flex-[0_0_25%] flex gap-0.5">
+            <div className="flex-1 overflow-hidden">
+              <AIMemoryDashboard />
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <QuantumSimulator />
+            </div>
           </div>
         </div>
       </div>
