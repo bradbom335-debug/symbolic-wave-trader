@@ -167,197 +167,63 @@ const getPriorityColor = (priority: string) => {
 
 export const NewsAndAlerts = () => {
   return (
-    <div className="space-y-6">
-      {/* Market News Feed */}
-      <Card className="p-6 bg-card/95 backdrop-blur-sm border-border/50 shadow-neural">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-foreground">Neural News Intelligence</h2>
-            <p className="text-sm text-muted-foreground">AI-powered market news analysis & sentiment tracking</p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Brain className="h-5 w-5 text-primary animate-pulse" />
-            <span className="text-sm font-medium text-primary">Neural Analysis Active</span>
-          </div>
+    <Card className="h-full flex flex-col p-2 bg-card/95 backdrop-blur-sm border-border/50 overflow-hidden">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <Brain className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-bold text-foreground">Neural News & Alerts</h3>
         </div>
+      </div>
 
-        <div className="space-y-4">
-          {mockNews.map((news) => (
-            <div 
-              key={news.id}
-              className="group relative p-5 bg-secondary/20 rounded-lg border border-border/20 hover:border-primary/50 transition-all duration-300 hover:shadow-resonance"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center space-x-3">
-                  <Badge className={getSentimentColor(news.sentiment)}>
-                    {news.sentiment.toUpperCase()}
-                  </Badge>
-                  <div className="flex items-center space-x-1 text-muted-foreground">
-                    {getImpactIcon(news.impact)}
-                    <span className="text-xs uppercase tracking-wide">{news.impact} Impact</span>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-3 w-3" />
-                    <span>{news.timestamp}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Globe className="h-3 w-3" />
-                    <span>{news.source}</span>
-                  </div>
-                </div>
+      <div className="flex-1 overflow-auto space-y-1">
+        {mockNews.map((news) => (
+          <div key={news.id} className="p-2 bg-muted/30 rounded border border-border/30 hover:border-primary/50 transition-colors">
+            <div className="flex items-start justify-between gap-2 mb-1">
+              <div className="flex-1 min-w-0">
+                <h4 className="text-xs font-semibold text-foreground line-clamp-1">{news.headline}</h4>
+                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{news.summary}</p>
               </div>
-
-              <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                {news.headline}
-              </h3>
-
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                {news.summary}
-              </p>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="flex flex-wrap gap-1">
-                    {news.relevantSymbols.map((symbol) => (
-                      <Badge key={symbol} variant="outline" className="text-xs">
-                        {symbol}
-                      </Badge>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center space-x-4 text-xs">
-                    <div className="flex items-center space-x-1">
-                      <Brain className="h-3 w-3 text-primary" />
-                      <span className="font-mono text-primary">{news.neuralScore.toFixed(2)}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <MessageCircle className="h-3 w-3 text-temporal" />
-                      <span className="font-mono text-temporal">{news.socialBuzz.toFixed(1)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Heart className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Share2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Neural Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-cognition opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none" />
+              <Badge variant="outline" className={`${getSentimentColor(news.sentiment)} text-xs shrink-0`}>
+                {news.sentiment}
+              </Badge>
             </div>
-          ))}
-        </div>
-
-        <div className="mt-6 pt-6 border-t border-border/30">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6 text-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-resonance rounded" />
-                <span className="text-muted-foreground">Bullish Sentiment</span>
+            
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                <span>{news.timestamp}</span>
+                <Globe className="h-3 w-3 ml-1" />
+                <span>{news.source}</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-chaos rounded" />
-                <span className="text-muted-foreground">Bearish Sentiment</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-temporal rounded" />
-                <span className="text-muted-foreground">Neutral Sentiment</span>
+              <div className="flex items-center gap-1">
+                {news.relevantSymbols.slice(0, 2).map(symbol => (
+                  <Badge key={symbol} variant="secondary" className="text-xs px-1 py-0">{symbol}</Badge>
+                ))}
               </div>
             </div>
-            <Button variant="outline" size="sm">
-              <Newspaper className="h-4 w-4 mr-2" />
-              View All News
-            </Button>
           </div>
-        </div>
-      </Card>
+        ))}
 
-      {/* Real-Time Alerts */}
-      <Card className="p-6 bg-card/95 backdrop-blur-sm border-border/50 shadow-neural">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-lg font-bold text-foreground">Real-Time Market Alerts</h3>
-            <p className="text-sm text-muted-foreground">Instant notifications for critical market events</p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Zap className="h-5 w-5 text-entropy animate-pulse" />
-            <span className="text-sm font-medium text-entropy">Live Monitoring</span>
-          </div>
-        </div>
-
-        <div className="space-y-3">
+        <div className="border-t border-border/50 pt-2 mt-2">
+          <h4 className="text-xs font-semibold text-foreground mb-1 flex items-center gap-1">
+            <AlertTriangle className="h-3 w-3 text-primary" />
+            Live Alerts
+          </h4>
           {mockAlerts.map((alert) => (
-            <div 
-              key={alert.id}
-              className={`p-4 rounded-lg border-l-4 ${getPriorityColor(alert.priority)} transition-all duration-300 hover:shadow-resonance`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-3">
-                  <Badge variant="outline" className="text-xs font-mono">
-                    {alert.symbol}
-                  </Badge>
-                  <Badge className={`text-xs ${
-                    alert.priority === 'critical' ? 'bg-chaos/20 text-chaos' :
-                    alert.priority === 'high' ? 'bg-entropy/20 text-entropy' :
-                    alert.priority === 'medium' ? 'bg-temporal/20 text-temporal' :
-                    'bg-resonance/20 text-resonance'
-                  }`}>
-                    {alert.priority.toUpperCase()}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground uppercase tracking-wide">
-                    {alert.type}
-                  </span>
+            <div key={alert.id} className={`p-1.5 rounded mb-1 ${getPriorityColor(alert.priority)}`}>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1">
+                    <Badge variant="outline" className="text-xs px-1 py-0">{alert.symbol}</Badge>
+                    <span className="text-xs text-foreground line-clamp-1">{alert.message}</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                  <Clock className="h-3 w-3" />
-                  <span>{alert.timestamp}</span>
-                </div>
+                <span className="text-xs text-muted-foreground shrink-0">{alert.timestamp}</span>
               </div>
-
-              <p className="text-sm text-foreground mb-2">
-                {alert.message}
-              </p>
-
-              {alert.data && (
-                <div className="text-xs text-muted-foreground">
-                  {Object.entries(alert.data).map(([key, value]) => (
-                    <span key={key} className="mr-4">
-                      <span className="capitalize">{key}:</span> <span className="font-mono">{String(value)}</span>
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
         </div>
-
-        <div className="mt-6 pt-6 border-t border-border/30">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-4">
-              <span className="text-muted-foreground">Alert Types:</span>
-              <div className="flex items-center space-x-4">
-                <span className="text-chaos">● Critical</span>
-                <span className="text-entropy">● High</span>
-                <span className="text-temporal">● Medium</span>
-                <span className="text-resonance">● Low</span>
-              </div>
-            </div>
-            <div className="text-muted-foreground">
-              <span className="font-mono text-primary">24</span> alerts today
-            </div>
-          </div>
-        </div>
-      </Card>
-    </div>
+      </div>
+    </Card>
   );
 };

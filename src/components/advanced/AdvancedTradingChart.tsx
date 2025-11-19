@@ -92,12 +92,12 @@ export const AdvancedTradingChart = () => {
   const priceChangePercent = (priceChange / previousPrice) * 100;
 
   return (
-    <Card className="p-6 bg-card/95 backdrop-blur-sm border-border/50 shadow-neural">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
+    <Card className="h-full flex flex-col p-2 bg-card/95 backdrop-blur-sm border-border/50">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">AAPL Neural Analysis</h2>
-            <div className="flex items-center space-x-4 mt-1">
+            <h3 className="text-sm font-bold text-foreground">AAPL Neural Analysis</h3>
+            <div className="flex items-center gap-2 mt-0.5">
               <span className="text-3xl font-mono font-bold text-foreground">${currentPrice.toFixed(2)}</span>
               <div className={`flex items-center space-x-1 ${priceChange >= 0 ? 'text-resonance' : 'text-chaos'}`}>
                 {priceChange >= 0 ? <TrendingUp className="h-5 w-5" /> : <TrendingDown className="h-5 w-5" />}
