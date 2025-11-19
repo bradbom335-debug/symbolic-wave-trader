@@ -59,162 +59,73 @@ export const QuantumSimulator = () => {
   };
 
   return (
-    <Card className="p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-neural">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-xl font-bold text-foreground">Quantum Trading Simulator</h2>
-          <p className="text-sm text-muted-foreground">Probabilistic eigenstate collapse modeling</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Atom className="h-5 w-5 text-primary animate-neural-pulse" />
-          <span className="text-sm font-medium text-primary">Superposition Active</span>
+    <Card className="h-full flex flex-col bg-[hsl(var(--terminal-bg-panel))] border-[hsl(var(--terminal-bg-elevated))]">
+      <div className="p-1.5 border-b border-[hsl(var(--terminal-bg-elevated))] flex items-center justify-between flex-shrink-0">
+        <h3 className="text-[10px] font-mono uppercase tracking-wider text-[hsl(var(--terminal-text-dim))]">Quantum Sim</h3>
+        <div className="flex items-center gap-1">
+          <Atom className="h-3 w-3 text-[hsl(var(--terminal-blue))]" />
+          <span className="text-[9px] font-mono text-[hsl(var(--terminal-blue))]">{isRunning ? 'RUN' : 'IDLE'}</span>
         </div>
       </div>
 
-      <div className="flex items-center space-x-4 mb-6">
-        <Button
-          onClick={handleToggleSimulation}
-          variant={isRunning ? "secondary" : "default"}
-          className="flex items-center space-x-2"
-        >
-          {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-          <span>{isRunning ? 'Pause' : 'Run'} Simulation</span>
-        </Button>
-        
-        <Button
-          onClick={handleReset}
-          variant="outline"
-          className="flex items-center space-x-2"
-        >
-          <RotateCcw className="h-4 w-4" />
-          <span>Reset</span>
-        </Button>
+      <div className="flex-1 overflow-y-auto p-1.5 min-h-0">
+        <div className="flex items-center gap-1 mb-2">
+          <Button
+            onClick={handleToggleSimulation}
+            size="sm"
+            variant={isRunning ? "secondary" : "default"}
+            className="h-5 text-[8px] px-2"
+          >
+            {isRunning ? <Pause className="h-2.5 w-2.5 mr-1" /> : <Play className="h-2.5 w-2.5 mr-1" />}
+            {isRunning ? 'Pause' : 'Run'}
+          </Button>
+          
+          <Button
+            onClick={handleReset}
+            size="sm"
+            variant="outline"
+            className="h-5 text-[8px] px-2"
+          >
+            <RotateCcw className="h-2.5 w-2.5 mr-1" />
+            Reset
+          </Button>
 
-        <div className="flex items-center space-x-4 ml-auto">
-          <div className="text-sm">
-            <span className="text-muted-foreground">Iteration: </span>
-            <span className="font-mono text-primary">{iteration}</span>
-          </div>
-          <div className="text-sm">
-            <span className="text-muted-foreground">Quantum Time: </span>
-            <span className="font-mono text-temporal">{(iteration * 0.1).toFixed(1)}τ</span>
+          <div className="ml-auto text-[9px] font-mono text-[hsl(var(--terminal-text-dim))]">
+            Iter: <span className="text-[hsl(var(--terminal-blue))]">{iteration}</span>
           </div>
         </div>
-      </div>
 
-      <div className="space-y-4">
-        {mockQuantumStates.map((state, index) => {
-          const dynamicProbability = isRunning 
-            ? Math.max(0, Math.min(1, state.probability + (Math.sin(iteration * 0.3 + index) * 0.2)))
-            : state.probability;
+        <div className="space-y-1">
+          {mockQuantumStates.map((state, index) => {
+            const dynamicProbability = isRunning 
+              ? Math.max(0, Math.min(1, state.probability + (Math.sin(iteration * 0.3 + index) * 0.2)))
+              : state.probability;
 
-          return (
-            <div 
-              key={index}
-              className="group relative p-4 bg-secondary/30 rounded-lg border border-border/30 hover:border-primary/50 transition-all duration-300"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="text-lg font-bold text-foreground">{state.symbol}</div>
-                  <div className={`px-2 py-1 rounded text-xs font-medium ${
-                    dynamicProbability > 0.7 ? 'bg-resonance/20 text-resonance' :
-                    dynamicProbability > 0.4 ? 'bg-temporal/20 text-temporal' :
-                    'bg-chaos/20 text-chaos'
+            return (
+              <div key={index} className="bg-[hsl(var(--terminal-bg-elevated))]/50 p-1 rounded">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[9px] font-mono font-bold text-foreground">{state.symbol}</span>
+                  <span className={`text-[8px] font-mono ${
+                    dynamicProbability > 0.7 ? 'text-[hsl(var(--terminal-green))]' : 
+                    dynamicProbability > 0.4 ? 'text-[hsl(var(--terminal-yellow))]' : 
+                    'text-[hsl(var(--terminal-red))]'
                   }`}>
-                    {dynamicProbability > 0.7 ? 'High Confidence' :
-                     dynamicProbability > 0.4 ? 'Uncertain' : 'Low Confidence'}
-                  </div>
+                    P: {(dynamicProbability * 100).toFixed(0)}%
+                  </span>
                 </div>
-                <div className="text-right">
-                  <div className="text-2xl font-mono font-bold text-foreground">
-                    {(dynamicProbability * 100).toFixed(1)}%
-                  </div>
-                  <div className="text-sm text-muted-foreground">Collapse Probability</div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-4 mb-4">
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">Amplitude |ψ|</div>
-                  <div className="text-lg font-mono font-bold text-primary">
-                    {state.amplitude.toFixed(2)}
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">Phase φ</div>
-                  <div className="text-lg font-mono font-bold text-temporal">
-                    {state.phase.toFixed(2)}
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">Entanglement</div>
-                  <div className="text-lg font-mono font-bold text-resonance">
-                    {state.entanglement.toFixed(2)}
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">Coherence</div>
-                  <div className="flex items-center justify-center">
-                    <Zap className={`h-5 w-5 ${
-                      isRunning ? 'text-temporal animate-pulse' : 'text-muted-foreground'
-                    }`} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Probability Wave Visualization */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Probability Wave Function</span>
-                  <span>ψ²(x,t)</span>
-                </div>
-                <div className="relative h-8 bg-secondary rounded-lg overflow-hidden">
+                <div className="h-1 bg-[hsl(var(--terminal-bg))] rounded-full overflow-hidden">
                   <div 
-                    className={`h-full transition-all duration-500 ${
-                      dynamicProbability > 0.7 ? 'bg-gradient-to-r from-resonance to-resonance-glow' :
-                      dynamicProbability > 0.4 ? 'bg-gradient-to-r from-temporal to-temporal-glow' :
-                      'bg-gradient-to-r from-chaos to-entropy'
+                    className={`h-full transition-all duration-300 ${
+                      dynamicProbability > 0.7 ? 'bg-[hsl(var(--terminal-green))]' : 
+                      dynamicProbability > 0.4 ? 'bg-[hsl(var(--terminal-yellow))]' : 
+                      'bg-[hsl(var(--terminal-red))]'
                     }`}
                     style={{ width: `${dynamicProbability * 100}%` }}
                   />
-                  {isRunning && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-wave-flow" />
-                  )}
                 </div>
               </div>
-
-              {/* Quantum Equation */}
-              <div className="mt-4 pt-4 border-t border-border/30">
-                <div className="text-xs text-muted-foreground mb-1">Quantum State Equation:</div>
-                <div className="font-mono text-sm text-primary bg-secondary/50 px-3 py-2 rounded border border-border/30">
-                  |ψ⟩ = {state.amplitude.toFixed(2)}e^(i{state.phase.toFixed(2)})|{state.symbol.replace(' ', '_')}⟩
-                </div>
-              </div>
-
-              {/* Neural Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-cognition opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none" />
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 pt-6 border-t border-border/30">
-        <div className="grid grid-cols-3 gap-4 text-center text-sm">
-          <div>
-            <div className="text-muted-foreground">Quantum Fidelity</div>
-            <div className="font-mono text-resonance font-bold">0.94</div>
-          </div>
-          <div>
-            <div className="text-muted-foreground">Decoherence Time</div>
-            <div className="font-mono text-temporal font-bold">2.3τ</div>
-          </div>
-          <div>
-            <div className="text-muted-foreground">Measurement Error</div>
-            <div className="font-mono text-entropy font-bold">±0.03</div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </Card>
