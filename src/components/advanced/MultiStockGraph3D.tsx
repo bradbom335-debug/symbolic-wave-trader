@@ -15,7 +15,7 @@ interface StockData {
 }
 
 // Generate mock stock data with continuous updates
-const generateStockData = (symbol: string, basePrice: number, volatility: number, length: number = 200): StockData => {
+const generateStockData = (symbol: string, basePrice: number, volatility: number, length: number = 500): StockData => {
   const data: { time: number; price: number }[] = [];
   let price = basePrice;
   
@@ -36,12 +36,16 @@ const generateStockData = (symbol: string, basePrice: number, volatility: number
 export const MultiStockGraph3D = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [spacing, setSpacing] = useState([15]);
+  const [waveLength, setWaveLength] = useState([500]);
   const [graphStyle, setGraphStyle] = useState<'line' | 'area' | 'bars'>('line');
   const [sortBy, setSortBy] = useState<'similarity' | 'alphabetical' | 'cluster'>('similarity');
   const [numStocks, setNumStocks] = useState(100);
   const [rotationX, setRotationX] = useState(0.3);
   const [rotationY, setRotationY] = useState(0.5);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [dragButton, setDragButton] = useState<number>(0);
   const [lastMouse, setLastMouse] = useState({ x: 0, y: 0 });
   const [timeOffset, setTimeOffset] = useState(0);
   const animationRef = useRef<number>();
@@ -65,7 +69,7 @@ export const MultiStockGraph3D = () => {
     for (let i = 0; i < numStocks; i++) {
       const baseSymbol = symbols[i % symbols.length];
       const symbol = i < symbols.length ? baseSymbol : `${baseSymbol}${i}`;
-      generated.push(generateStockData(symbol, 100 + Math.random() * 400, 2 + Math.random() * 8));
+      generated.push(generateStockData(symbol, 100 + Math.random() * 400, 2 + Math.random() * 8, waveLength[0]));
     }
     
     // Sort based on selected method
@@ -116,15 +120,15 @@ export const MultiStockGraph3D = () => {
         
         stock.data.push({ time: lastTime + 1, price: newPrice });
         
-        // Keep only last 200 points
-        if (stock.data.length > 200) {
+        // Keep data at current wave length
+        if (stock.data.length > waveLength[0]) {
           stock.data.shift();
         }
       });
     }, 100);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [waveLength]);
 
   // Smooth animation frame
   useEffect(() => {
@@ -150,8 +154,8 @@ export const MultiStockGraph3D = () => {
 
       // 3D projection settings
       const perspective = 800;
-      const centerX = width / 2;
-      const centerY = height / 2;
+      const centerX = width / 2 + panX;
+      const centerY = height / 2 + panY;
       const zSpacing = spacing[0];
 
       // Calculate price ranges for normalization
@@ -293,7 +297,7 @@ export const MultiStockGraph3D = () => {
     };
 
     draw();
-  }, [stocks, spacing, graphStyle, rotationX, rotationY, timeOffset, sortBy]);
+  }, [stocks, spacing, graphStyle, rotationX, rotationY, panX, panY, timeOffset, sortBy]);
 
   // Handle canvas resize
   useEffect(() => {
@@ -316,18 +320,57 @@ export const MultiStockGraph3D = () => {
     return () => window.removeEventListener('resize', resize);
   }, []);
 
+  // Mouse interaction handlers
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setDragButton(e.button);
+    setLastMouse({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - lastMouse.x;
+    const deltaY = e.clientY - lastMouse.y;
+    
+    if (dragButton === 0) {
+      // Left mouse button - rotate
+      setRotationY(prev => prev + deltaX * 0.005);
+      setRotationX(prev => prev + deltaY * 0.005);
+    } else if (dragButton === 2) {
+      // Right mouse button - pan
+      setPanX(prev => prev + deltaX);
+      setPanY(prev => prev + deltaY);
+    }
+    
+    setLastMouse({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleContextMenu = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+  };
+
   return (
-    <Card className="h-full flex flex-col p-2 bg-card/95 backdrop-blur-sm border-border/50">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <Layers className="h-4 w-4 text-primary" />
-          <h3 className="text-sm font-bold">3D Multi-Stock Analyzer</h3>
-          <Badge variant="outline" className="text-xs">{numStocks} stocks</Badge>
+    <Card className="h-full flex flex-col bg-[hsl(var(--terminal-bg-panel))] border-[hsl(var(--terminal-bg-elevated))]">
+      <div className="flex items-center justify-between p-1.5 border-b border-[hsl(var(--terminal-bg-elevated))]">
+        <div className="flex items-center gap-1.5">
+          <Layers className="h-3 w-3 text-[hsl(var(--terminal-accent))]" />
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[hsl(var(--terminal-text))]">3D WAVE OCEAN</span>
+          <Badge variant="outline" className="text-[8px] h-4 px-1">{numStocks}</Badge>
         </div>
         
         <div className="flex items-center gap-1">
           <Select value={graphStyle} onValueChange={(v: any) => setGraphStyle(v)}>
-            <SelectTrigger className="h-6 text-xs w-20">
+            <SelectTrigger className="h-5 text-[9px] w-16 border-[hsl(var(--terminal-bg-elevated))]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -338,18 +381,18 @@ export const MultiStockGraph3D = () => {
           </Select>
 
           <Select value={sortBy} onValueChange={(v: any) => setSortBy(v)}>
-            <SelectTrigger className="h-6 text-xs w-24">
+            <SelectTrigger className="h-5 text-[9px] w-20 border-[hsl(var(--terminal-bg-elevated))]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="correlation">Similar</SelectItem>
+              <SelectItem value="similarity">Similar</SelectItem>
               <SelectItem value="cluster">Cluster</SelectItem>
               <SelectItem value="alphabetical">A-Z</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={numStocks.toString()} onValueChange={(v) => setNumStocks(parseInt(v))}>
-            <SelectTrigger className="h-6 text-xs w-16">
+            <SelectTrigger className="h-5 text-[9px] w-14 border-[hsl(var(--terminal-bg-elevated))]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -362,25 +405,50 @@ export const MultiStockGraph3D = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-xs text-muted-foreground">Spacing:</span>
-        <Slider 
-          value={spacing} 
-          onValueChange={setSpacing}
-          min={5}
-          max={50}
-          step={1}
-          className="flex-1"
-        />
-        <span className="text-xs font-mono w-8">{spacing[0]}</span>
+      <div className="flex items-center gap-3 px-1.5 py-1 bg-[hsl(var(--terminal-bg))]">
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] text-[hsl(var(--terminal-text-dim))]">SPACING</span>
+          <Slider
+            value={spacing}
+            onValueChange={setSpacing}
+            min={5}
+            max={30}
+            step={1}
+            className="w-24"
+          />
+          <span className="text-[9px] text-[hsl(var(--terminal-accent))]">{spacing[0]}</span>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] text-[hsl(var(--terminal-text-dim))]">WAVE LENGTH</span>
+          <Slider
+            value={waveLength}
+            onValueChange={setWaveLength}
+            min={200}
+            max={1000}
+            step={50}
+            className="w-24"
+          />
+          <span className="text-[9px] text-[hsl(var(--terminal-accent))]">{waveLength[0]}</span>
+        </div>
+        
+        <div className="text-[8px] text-[hsl(var(--terminal-text-dim))] ml-auto">
+          LEFT DRAG: ROTATE | RIGHT DRAG: PAN
+        </div>
       </div>
 
-      <div className="flex-1 relative bg-background/50 rounded border border-border/50 overflow-hidden">
-        <canvas 
-          ref={canvasRef} 
-          className="w-full h-full"
-          style={{ width: '100%', height: '100%' }}
-        />
+      <div className="flex-1 min-h-0">
+        <div className="w-full h-full bg-[hsl(var(--terminal-bg))] rounded border border-[hsl(var(--terminal-bg-elevated))]">
+          <canvas 
+            ref={canvasRef}
+            className="w-full h-full cursor-move"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            onContextMenu={handleContextMenu}
+          />
+        </div>
       </div>
     </Card>
   );
