@@ -14,12 +14,12 @@ interface StockData {
   cluster: number;
 }
 
-// Generate mock stock data
-const generateStockData = (symbol: string, basePrice: number, volatility: number): StockData => {
+// Generate mock stock data with continuous updates
+const generateStockData = (symbol: string, basePrice: number, volatility: number, length: number = 200): StockData => {
   const data: { time: number; price: number }[] = [];
   let price = basePrice;
   
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < length; i++) {
     price = price + (Math.random() - 0.5) * volatility;
     data.push({ time: i, price });
   }
@@ -43,8 +43,9 @@ export const MultiStockGraph3D = () => {
   const [rotationY, setRotationY] = useState(0.5);
   const [isDragging, setIsDragging] = useState(false);
   const [lastMouse, setLastMouse] = useState({ x: 0, y: 0 });
-  const [waveOffset, setWaveOffset] = useState(0);
+  const [timeOffset, setTimeOffset] = useState(0);
   const animationRef = useRef<number>();
+  const stocksRef = useRef<StockData[]>([]);
 
   // Calculate similarity between two stock patterns
   const calculateSimilarity = (stock1: StockData, stock2: StockData): number => {
@@ -97,13 +98,37 @@ export const MultiStockGraph3D = () => {
       generated.sort((a, b) => a.cluster - b.cluster);
     }
     
+    stocksRef.current = generated;
     return generated;
   }, [numStocks, sortBy]);
 
-  // Wave animation
+  // Continuously update stock data to simulate real-time updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeOffset(prev => prev + 1);
+      
+      // Add new data points to each stock
+      stocksRef.current.forEach(stock => {
+        const lastPrice = stock.data[stock.data.length - 1].price;
+        const lastTime = stock.data[stock.data.length - 1].time;
+        const volatility = 2 + Math.random() * 8;
+        const newPrice = lastPrice + (Math.random() - 0.5) * volatility;
+        
+        stock.data.push({ time: lastTime + 1, price: newPrice });
+        
+        // Keep only last 200 points
+        if (stock.data.length > 200) {
+          stock.data.shift();
+        }
+      });
+    }, 100);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Smooth animation frame
   useEffect(() => {
     const animate = () => {
-      setWaveOffset(prev => (prev + 0.02) % (Math.PI * 2));
       animationRef.current = requestAnimationFrame(animate);
     };
     animationRef.current = requestAnimationFrame(animate);
@@ -150,14 +175,13 @@ export const MultiStockGraph3D = () => {
         const sinY = Math.sin(rotationY);
 
         if (graphStyle === 'area') {
-          // Wave area graph with animation
+          // Area graph
           ctx.beginPath();
           ctx.fillStyle = stock.color.replace('50%', '30%');
           
           stock.data.forEach((point, i) => {
-            const x = (point.time - 100) * 2;
-            const waveInfluence = Math.sin(waveOffset + i * 0.1 + stockIndex * 0.2) * 5;
-            const y = -(((point.price - minPrice) / priceRange) * 200 - 100) + waveInfluence;
+            const x = (point.time - stock.data[0].time - 100) * 2;
+            const y = -(((point.price - minPrice) / priceRange) * 200 - 100);
             
             // 3D rotation and projection
             let rotX = x;
@@ -183,15 +207,14 @@ export const MultiStockGraph3D = () => {
         }
 
         if (graphStyle === 'line') {
-          // Wave line graph with animation
+          // Line graph
           ctx.beginPath();
           ctx.strokeStyle = stock.color;
           ctx.lineWidth = 2 * scale;
           
           stock.data.forEach((point, i) => {
-            const x = (point.time - 100) * 2;
-            const waveInfluence = Math.sin(waveOffset + i * 0.1 + stockIndex * 0.2) * 5;
-            const y = -(((point.price - minPrice) / priceRange) * 200 - 100) + waveInfluence;
+            const x = (point.time - stock.data[0].time - 100) * 2;
+            const y = -(((point.price - minPrice) / priceRange) * 200 - 100);
             
             // 3D rotation and projection
             let rotX = x;
@@ -216,15 +239,14 @@ export const MultiStockGraph3D = () => {
         }
 
         if (graphStyle === 'bars') {
-          // Wave bar graph with animation
+          // Bar graph
           ctx.fillStyle = stock.color;
           
           stock.data.forEach((point, i) => {
             if (i % 5 !== 0) return;
             
-            const x = (point.time - 100) * 2;
-            const waveInfluence = Math.sin(waveOffset + i * 0.1 + stockIndex * 0.2) * 5;
-            const y = -(((point.price - minPrice) / priceRange) * 200 - 100) + waveInfluence;
+            const x = (point.time - stock.data[0].time - 100) * 2;
+            const y = -(((point.price - minPrice) / priceRange) * 200 - 100);
             
             // 3D rotation and projection
             let rotX = x;
@@ -271,7 +293,7 @@ export const MultiStockGraph3D = () => {
     };
 
     draw();
-  }, [stocks, spacing, graphStyle, rotationX, rotationY, waveOffset, sortBy]);
+  }, [stocks, spacing, graphStyle, rotationX, rotationY, timeOffset, sortBy]);
 
   // Handle canvas resize
   useEffect(() => {
