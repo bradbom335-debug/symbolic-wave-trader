@@ -37,12 +37,26 @@ export const MultiStockGraph3D = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [spacing, setSpacing] = useState([15]);
   const [graphStyle, setGraphStyle] = useState<'line' | 'area' | 'bars'>('line');
-  const [sortBy, setSortBy] = useState<'correlation' | 'alphabetical' | 'cluster'>('correlation');
+  const [sortBy, setSortBy] = useState<'similarity' | 'alphabetical' | 'cluster'>('similarity');
   const [numStocks, setNumStocks] = useState(100);
-  const [rotation, setRotation] = useState(0);
+  const [rotationX, setRotationX] = useState(0.3);
+  const [rotationY, setRotationY] = useState(0.5);
+  const [isDragging, setIsDragging] = useState(false);
+  const [lastMouse, setLastMouse] = useState({ x: 0, y: 0 });
+  const [waveOffset, setWaveOffset] = useState(0);
   const animationRef = useRef<number>();
 
-  // Generate stocks with clustering
+  // Calculate similarity between two stock patterns
+  const calculateSimilarity = (stock1: StockData, stock2: StockData): number => {
+    let sum = 0;
+    for (let i = 0; i < Math.min(stock1.data.length, stock2.data.length); i++) {
+      const diff = Math.abs(stock1.data[i].price - stock2.data[i].price);
+      sum += diff;
+    }
+    return -sum; // Negative so higher similarity = lower difference
+  };
+
+  // Generate stocks with similarity-based sorting
   const stocks = useMemo(() => {
     const generated: StockData[] = [];
     const symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'BRK.B', 'JPM', 'V'];
@@ -54,8 +68,29 @@ export const MultiStockGraph3D = () => {
     }
     
     // Sort based on selected method
-    if (sortBy === 'correlation') {
-      generated.sort((a, b) => b.correlation - a.correlation);
+    if (sortBy === 'similarity') {
+      // Sort by nearest neighbor similarity
+      const sorted: StockData[] = [generated[0]];
+      const remaining = generated.slice(1);
+      
+      while (remaining.length > 0) {
+        const last = sorted[sorted.length - 1];
+        let bestIndex = 0;
+        let bestSimilarity = -Infinity;
+        
+        remaining.forEach((stock, index) => {
+          const similarity = calculateSimilarity(last, stock);
+          if (similarity > bestSimilarity) {
+            bestSimilarity = similarity;
+            bestIndex = index;
+          }
+        });
+        
+        sorted.push(remaining[bestIndex]);
+        remaining.splice(bestIndex, 1);
+      }
+      
+      return sorted;
     } else if (sortBy === 'alphabetical') {
       generated.sort((a, b) => a.symbol.localeCompare(b.symbol));
     } else if (sortBy === 'cluster') {
@@ -64,6 +99,18 @@ export const MultiStockGraph3D = () => {
     
     return generated;
   }, [numStocks, sortBy]);
+
+  // Wave animation
+  useEffect(() => {
+    const animate = () => {
+      setWaveOffset(prev => (prev + 0.02) % (Math.PI * 2));
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -77,7 +124,7 @@ export const MultiStockGraph3D = () => {
       ctx.clearRect(0, 0, width, height);
 
       // 3D projection settings
-      const perspective = 600;
+      const perspective = 800;
       const centerX = width / 2;
       const centerY = height / 2;
       const zSpacing = spacing[0];
@@ -88,99 +135,112 @@ export const MultiStockGraph3D = () => {
       const maxPrice = Math.max(...allPrices);
       const priceRange = maxPrice - minPrice;
 
-      // Draw each stock
+      // Draw each stock as waves
       stocks.forEach((stock, stockIndex) => {
         const z = stockIndex * zSpacing - (stocks.length * zSpacing) / 2;
         const scale = perspective / (perspective + z);
         
         ctx.save();
-        ctx.globalAlpha = Math.max(0.3, scale);
+        ctx.globalAlpha = Math.max(0.2, scale);
 
-        // Apply rotation
-        const cosR = Math.cos(rotation);
-        const sinR = Math.sin(rotation);
+        // 3D rotation matrices
+        const cosX = Math.cos(rotationX);
+        const sinX = Math.sin(rotationX);
+        const cosY = Math.cos(rotationY);
+        const sinY = Math.sin(rotationY);
 
         if (graphStyle === 'area') {
-          // Area graph
+          // Wave area graph with animation
           ctx.beginPath();
           ctx.fillStyle = stock.color.replace('50%', '30%');
           
           stock.data.forEach((point, i) => {
             const x = (point.time - 100) * 2;
-            const y = -(((point.price - minPrice) / priceRange) * 200 - 100);
+            const waveInfluence = Math.sin(waveOffset + i * 0.1 + stockIndex * 0.2) * 5;
+            const y = -(((point.price - minPrice) / priceRange) * 200 - 100) + waveInfluence;
             
-            // 3D rotation
-            const rotX = x * cosR - z * sinR;
-            const rotZ = x * sinR + z * cosR;
-            const scale3d = perspective / (perspective + rotZ);
+            // 3D rotation and projection
+            let rotX = x;
+            let rotY = y * cosX - z * sinX;
+            let rotZ = y * sinX + z * cosX;
             
-            const screenX = centerX + rotX * scale3d;
-            const screenY = centerY + y * scale3d;
+            const finalX = rotX * cosY - rotZ * sinY;
+            const finalZ = rotX * sinY + rotZ * cosY;
             
-            if (i === 0) ctx.moveTo(screenX, screenY);
-            else ctx.lineTo(screenX, screenY);
+            const projScale = perspective / (perspective + finalZ);
+            const projX = centerX + finalX * projScale;
+            const projY = centerY + rotY * projScale;
+            
+            if (i === 0) {
+              ctx.moveTo(projX, projY);
+            } else {
+              ctx.lineTo(projX, projY);
+            }
           });
           
-          // Close to baseline
-          const lastPoint = stock.data[stock.data.length - 1];
-          const lastX = (lastPoint.time - 100) * 2;
-          const lastRotX = lastX * cosR - z * sinR;
-          const lastRotZ = lastX * sinR + z * cosR;
-          const lastScale = perspective / (perspective + lastRotZ);
-          
-          ctx.lineTo(centerX + lastRotX * lastScale, centerY + 100 * lastScale);
-          
-          const firstX = (stock.data[0].time - 100) * 2;
-          const firstRotX = firstX * cosR - z * sinR;
-          const firstRotZ = firstX * sinR + z * cosR;
-          const firstScale = perspective / (perspective + firstRotZ);
-          
-          ctx.lineTo(centerX + firstRotX * firstScale, centerY + 100 * firstScale);
           ctx.closePath();
           ctx.fill();
         }
 
-        // Draw line
-        ctx.beginPath();
-        ctx.strokeStyle = stock.color;
-        ctx.lineWidth = Math.max(0.5, 2 * scale);
-
-        stock.data.forEach((point, i) => {
-          const x = (point.time - 100) * 2;
-          const y = -(((point.price - minPrice) / priceRange) * 200 - 100);
+        if (graphStyle === 'line') {
+          // Wave line graph with animation
+          ctx.beginPath();
+          ctx.strokeStyle = stock.color;
+          ctx.lineWidth = 2 * scale;
           
-          // 3D rotation
-          const rotX = x * cosR - z * sinR;
-          const rotZ = x * sinR + z * cosR;
-          const scale3d = perspective / (perspective + rotZ);
-          
-          const screenX = centerX + rotX * scale3d;
-          const screenY = centerY + y * scale3d;
-          
-          if (i === 0) ctx.moveTo(screenX, screenY);
-          else ctx.lineTo(screenX, screenY);
-        });
-        
-        ctx.stroke();
-
-        // Draw bars for bar style
-        if (graphStyle === 'bars') {
           stock.data.forEach((point, i) => {
-            if (i % 5 !== 0) return; // Sample bars
+            const x = (point.time - 100) * 2;
+            const waveInfluence = Math.sin(waveOffset + i * 0.1 + stockIndex * 0.2) * 5;
+            const y = -(((point.price - minPrice) / priceRange) * 200 - 100) + waveInfluence;
+            
+            // 3D rotation and projection
+            let rotX = x;
+            let rotY = y * cosX - z * sinX;
+            let rotZ = y * sinX + z * cosX;
+            
+            const finalX = rotX * cosY - rotZ * sinY;
+            const finalZ = rotX * sinY + rotZ * cosY;
+            
+            const projScale = perspective / (perspective + finalZ);
+            const projX = centerX + finalX * projScale;
+            const projY = centerY + rotY * projScale;
+            
+            if (i === 0) {
+              ctx.moveTo(projX, projY);
+            } else {
+              ctx.lineTo(projX, projY);
+            }
+          });
+          
+          ctx.stroke();
+        }
+
+        if (graphStyle === 'bars') {
+          // Wave bar graph with animation
+          ctx.fillStyle = stock.color;
+          
+          stock.data.forEach((point, i) => {
+            if (i % 5 !== 0) return;
             
             const x = (point.time - 100) * 2;
-            const y = -(((point.price - minPrice) / priceRange) * 200 - 100);
+            const waveInfluence = Math.sin(waveOffset + i * 0.1 + stockIndex * 0.2) * 5;
+            const y = -(((point.price - minPrice) / priceRange) * 200 - 100) + waveInfluence;
             
-            const rotX = x * cosR - z * sinR;
-            const rotZ = x * sinR + z * cosR;
-            const scale3d = perspective / (perspective + rotZ);
+            // 3D rotation and projection
+            let rotX = x;
+            let rotY = y * cosX - z * sinX;
+            let rotZ = y * sinX + z * cosX;
             
-            const screenX = centerX + rotX * scale3d;
-            const screenY = centerY + y * scale3d;
-            const baseY = centerY + 100 * scale3d;
+            const finalX = rotX * cosY - rotZ * sinY;
+            const finalZ = rotX * sinY + rotZ * cosY;
             
-            ctx.fillStyle = stock.color;
-            ctx.fillRect(screenX - 1, screenY, 2, baseY - screenY);
+            const projScale = perspective / (perspective + finalZ);
+            const projX = centerX + finalX * projScale;
+            const projY = centerY + rotY * projScale;
+            
+            const barWidth = 3 * scale;
+            const barHeight = Math.abs(projY - centerY);
+            ctx.fillRect(projX - barWidth / 2, centerY - (projY > centerY ? 0 : barHeight), barWidth, barHeight);
           });
         }
 
@@ -211,20 +271,7 @@ export const MultiStockGraph3D = () => {
     };
 
     draw();
-
-    // Auto-rotate
-    const animate = () => {
-      setRotation(r => r + 0.002);
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    animate();
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [stocks, spacing, graphStyle, rotation, sortBy]);
+  }, [stocks, spacing, graphStyle, rotationX, rotationY, waveOffset, sortBy]);
 
   // Handle canvas resize
   useEffect(() => {
