@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Portfolio from "./pages/Portfolio";
 import Analysis from "./pages/Analysis";
 import Settings from "./pages/Settings";
+import StockGraph3D from "./pages/StockGraph3D";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="portfolio" element={<Portfolio />} />
               <Route path="analysis" element={<Analysis />} />
+              <Route path="3d-graph" element={<StockGraph3D />} />
               <Route path="settings" element={<Settings />} />
             </Route>
             <Route path="*" element={<NotFound />} />
