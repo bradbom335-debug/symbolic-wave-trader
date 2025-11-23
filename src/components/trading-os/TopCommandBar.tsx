@@ -10,7 +10,8 @@ import {
   Clock,
   ChevronDown,
   Zap,
-  Activity
+  Activity,
+  Layers
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,6 +25,7 @@ const navigationTabs = [
   { id: 'markets', label: 'Markets', icon: BarChart3, path: '/dashboard' },
   { id: 'analysis', label: 'Analysis', icon: TrendingUp, path: '/analysis' },
   { id: 'agents', label: 'AI Agents', icon: Bot, path: '/portfolio' },
+  { id: '3d-graph', label: '3D Graph', icon: Layers, path: '/3d-graph' },
 ];
 
 export function TopCommandBar() {
