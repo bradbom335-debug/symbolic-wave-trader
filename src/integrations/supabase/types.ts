@@ -14,7 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dashboard_layouts: {
+        Row: {
+          created_at: string
+          id: string
+          is_default: boolean
+          name: string
+          panels: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name: string
+          panels?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          panels?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      portfolio_holdings: {
+        Row: {
+          asset_class: string
+          avg_price: number
+          created_at: string
+          id: string
+          notes: string | null
+          sector: string | null
+          shares: number
+          symbol: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset_class?: string
+          avg_price: number
+          created_at?: string
+          id?: string
+          notes?: string | null
+          sector?: string | null
+          shares: number
+          symbol: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset_class?: string
+          avg_price?: number
+          created_at?: string
+          id?: string
+          notes?: string | null
+          sector?: string | null
+          shares?: number
+          symbol?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_app_settings: {
+        Row: {
+          created_at: string
+          default_symbol: string
+          default_timeframe: string
+          goals: string | null
+          refresh_interval_ms: number
+          risk_tolerance: string
+          theme: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          default_symbol?: string
+          default_timeframe?: string
+          goals?: string | null
+          refresh_interval_ms?: number
+          risk_tolerance?: string
+          theme?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          default_symbol?: string
+          default_timeframe?: string
+          goals?: string | null
+          refresh_interval_ms?: number
+          risk_tolerance?: string
+          theme?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

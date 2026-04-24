@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Bot, 
-  Newspaper, 
+import {
+  BarChart3,
+  TrendingUp,
+  Bot,
+  Newspaper,
   Bell,
   User,
   Wifi,
@@ -11,7 +11,9 @@ import {
   ChevronDown,
   Zap,
   Activity,
-  Layers
+  Layers,
+  Settings as SettingsIcon,
+  Wallet,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +26,8 @@ import { Card } from '@/components/ui/card';
 const navigationTabs = [
   { id: 'markets', label: 'Markets', icon: BarChart3, path: '/dashboard' },
   { id: 'analysis', label: 'Analysis', icon: TrendingUp, path: '/analysis' },
-  { id: 'agents', label: 'AI Agents', icon: Bot, path: '/portfolio' },
+  { id: 'portfolio', label: 'Portfolio', icon: Wallet, path: '/portfolio' },
+  { id: 'agents', label: 'AI Agents', icon: Bot, path: '/' },
   { id: '3d-graph', label: '3D Graph', icon: Layers, path: '/3d-graph' },
 ];
 
@@ -118,6 +121,11 @@ export function TopCommandBar() {
             <Badge className="absolute -top-0.5 -right-0.5 w-3 h-3 p-0 flex items-center justify-center text-[8px] bg-red-500 border-0">
               3
             </Badge>
+          </Button>
+
+          {/* Settings */}
+          <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-slate-400 hover:text-white" onClick={() => navigate('/settings')}>
+            <SettingsIcon className="w-3 h-3" />
           </Button>
 
           {/* User Profile */}
