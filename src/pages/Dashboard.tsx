@@ -6,6 +6,7 @@ import { QuantumSimulator } from '@/components/dashboard/QuantumSimulator';
 import { MarketHeatmap } from '@/components/dashboard/MarketHeatmap';
 import { AIMemoryDashboard } from '@/components/ai-memory/AIMemoryDashboard';
 import { MultiStockGraph3D } from '@/components/advanced/MultiStockGraph3D';
+import { AIStockAnalysis } from '@/components/advanced/AIStockAnalysis';
 
 const Dashboard = () => {
   return (
@@ -29,10 +30,13 @@ const Dashboard = () => {
           <div className="flex-[0_0_25%] overflow-hidden">
             <AdvancedPortfolioAnalytics />
           </div>
-          <div className="flex-[0_0_50%] overflow-hidden">
+          <div className="flex-[0_0_35%] overflow-hidden">
             <NewsAndAlerts />
           </div>
-          <div className="flex-[0_0_25%] flex gap-0.5">
+          <div className="flex-[0_0_25%] overflow-hidden">
+            <AIStockAnalysis symbol="AAPL" currentPrice={178.45} />
+          </div>
+          <div className="flex-[0_0_15%] flex gap-0.5">
             <div className="flex-1 overflow-hidden">
               <AIMemoryDashboard />
             </div>
